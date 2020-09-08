@@ -25,7 +25,6 @@ addBtn.addEventListener("click", () => {
     prescriptionFormContainer.style.display = "none";
   }
 
-  // fetch()
 });
 
 function fetchData() {
@@ -83,8 +82,8 @@ function dipslayPrescription(prescription) {
 
   }
 
-  medNameP.innerText = prescription.medication.name + " ";
-  medStrengthSpan.innerText = prescription.medication.strength + " ";
+  medNameP.innerText = prescription.medication_name + " ";
+  medStrengthSpan.innerText = prescription.medication_strength + " ";
   medTimeSpan.innerText = prescription.time_to_take;
 
   const btnDiv = document.createElement("div");
@@ -102,7 +101,7 @@ function dipslayPrescription(prescription) {
 
     medLi.innerText = "";
     // console.log(prescription.medication.name);
-    medTakenLi.innerText = prescription.medication.name;
+    medTakenLi.innerText = prescription.medication_name;
   });
 
   const editATag = document.createElement("a");
@@ -128,19 +127,59 @@ function dipslayPrescription(prescription) {
 
     medNameTag.innerText =
       "Name: " +
-      prescription.medication.name +
+      prescription.medication_name +
       " " +
-      prescription.medication.strength;
-    medImprintTag.innerText = "Imprint: " + prescription.medication.imprint;
+      prescription.medication_strength;
+    medImprintTag.innerText = "Imprint: " + prescription.medication_imprint;
 
-    medImage.src = prescription.medication.image;
+    medImage.src = prescription.medication_image;
 
     polaroidDiv.append(medImage, medImprintTag, medNameTag);
     containerDiv.append(polaroidDiv);
-    // containerDiv.append(medNameTag, medImprintTag, medImage);
     medDetailDiv.append(containerDiv);
-    // console.log(prescription.medication);
   });
 }
 
-// console.log(new Date().toLocaleTimeString());
+
+// POST - add new prescription
+
+prescriptionFormContainer.addEventListener('submit', () => {
+
+  event.preventDefault
+
+  let medication_name = event.target[0].value
+  let medication_strength = event.target[1].value
+  let medication_imprint = event.target[2].value
+  let medication_precaution = event.target[3].value
+  let medication_category = event.target[4].value
+  let medication_image = event.target[5].value
+  let frequency = event.target[6].value
+  let dose = event.target[7].value
+  let time_to_take = event.target[8].value
+
+  configObj = {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      user_id: 1,
+      medication_name,
+      medication_strength,
+      medication_imprint,
+      medication_precaution,
+      medication_category,
+      medication_image,
+      frequency,
+      dose,
+      time_to_take
+    })
+  }
+  fetch(url, configObj)
+    .then(resp => resp.json())
+    .then(newPrescription => dipslayPrescription(newPrescription))
+
+  prescriptionFormContainer.reset()
+
+})

@@ -19,7 +19,7 @@ class Api::V1::PrescriptionsController < ApplicationController
 
   def update
     @prescription.update(prescription_params)
-    render json: @Prescription
+    render json: @prescription
   end
 
   def destroy
