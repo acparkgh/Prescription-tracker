@@ -110,6 +110,18 @@ function dipslayPrescription(prescription) {
   const deleteATag = document.createElement("a");
   deleteATag.innerHTML = `<a class="delete-button" uk-icon="icon: trash" uk-tooltip="Delete prescription"></a>`;
 
+  // Delete request - delete a prescription
+
+  deleteATag.addEventListener('click', () => {
+
+    console.log("Clicked")
+
+    fetch(url + prescription.id, {
+      method: "DELETE"
+    })
+    medLi.innerText = "";
+  })
+
   medNamDiv.append(medNameP, medStrengthSpan, medTimeSpan, breakTag);
   medLi.append(medNamDiv, checkTag, editATag, deleteATag);
 
